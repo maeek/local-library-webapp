@@ -5,12 +5,14 @@ const express = require("express");
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 const mime = require("mime-type/with-db");
 const fs = require("fs");
 
 const app = express();
 
 app.use(compression());
+app.use(cors());
 app.use(bodyParser.json({ extended: true }));
 // app.get("*", (req, res) => {
 //   res.status(200).json({ message: "ok" });
@@ -52,6 +54,14 @@ function returnFilesInFolder(folder = "/") {
     });
   });
 }
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.post("/api", function(req, res) {
   const { action, key, path } = req.body;
