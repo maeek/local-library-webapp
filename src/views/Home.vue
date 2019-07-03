@@ -1,18 +1,21 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div id="app">
+    <!-- <left-panel />
+    <right-panel /> -->
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+// import leftPanel from "@/components/left-panel.vue";
+// import rightPanel from "@/components/right-panel.vue";
 
 export default {
-  name: "home",
+  name: "app",
   components: {
-    HelloWorld
+    // leftPanel,
+    // rightPanel
   }
 };
 </script>
+
+<style scoped lang="scss"></style>
