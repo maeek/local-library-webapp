@@ -1,26 +1,25 @@
 <template>
-<div class="playNext">
-  <div class="progress" :class="{ init: prog }"></div>
-  <div class="closeMe" @click="cancelRedirect">
-    <span>Dismiss</span><i class="material-icons">close</i>
-  </div>
-  <div class="wrap">
-    <div class="next">Watch next:</div>
-    <div class="what">
-      {{ getNext(path) ? getNext(path).name : "" }}
+  <div class="playNext">
+    <div class="progress" :class="{ init: prog }"></div>
+    <div class="closeMe" @click="cancelRedirect">
+      <span>Dismiss</span><i class="material-icons">close</i>
     </div>
+    <div class="wrap">
+      <div class="next">Watch next:</div>
+      <div class="what">
+        {{ getNext(path) ? getNext(path).name : "" }}
+      </div>
+    </div>
+    <action-button
+      v-if="getNext(path)"
+      :data-link="getNext(path) ? getNext(path).link : ''"
+      @click.native="
+        (vidEnded = false), getNext(path) ? routeMe(getNext(path).link) : ''
+      "
+    >
+      <i class="material-icons">play_circle_filled</i>
+    </action-button>
   </div>
-  <action-button
-    v-if="getNext(path)"
-    :data-link="getNext(path) ? getNext(path).link : ''"
-    @click.native="
-      (vidEnded = false),
-        getNext(path) ? routeMe(getNext(path).link) : ''
-    "
-  >
-    <i class="material-icons">play_circle_filled</i>
-  </action-button>
-</div>  
 </template>
 
 <script>
@@ -38,11 +37,10 @@ export default {
   data() {
     return {
       prog: false
-    }
+    };
   },
   computed: {
-    ...mapGetters(["getNext", "getPrev"]),
-
+    ...mapGetters(["getNext", "getPrev"])
   },
   methods: {
     ...mapActions(["updateMainFolders", "updateFiles"]),
@@ -137,5 +135,4 @@ export default {
     }
   }
 }
-
 </style>

@@ -11,7 +11,8 @@
       <action-button
         v-if="getFile.mime != 'directory'"
         @click.native="goTo('/files/' + getFile.link)"
-        >Download <i class="material-icons left-margin">save_alt</i></action-button
+        >Download
+        <i class="material-icons left-margin">save_alt</i></action-button
       >
       <action-button
         :data-link="getFile.link"
@@ -24,7 +25,8 @@
         "
         @click.native="open(getFile.mime, getFile.link)"
       >
-        {{ getFile.mime == "directory" ? "Open" : "Play" }} <i class="material-icons left-margin">toll</i>
+        {{ getFile.mime == "directory" ? "Open" : "Play" }}
+        <i class="material-icons left-margin">toll</i>
       </action-button>
     </div>
   </li>
@@ -129,7 +131,7 @@ li {
         background: #dcdcdc;
       }
     }
-    
+
     span {
       padding: 0 1rem;
     }

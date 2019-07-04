@@ -9,9 +9,9 @@
         >
       </li>
       <li v-for="folder in mainFolders" :key="folder.path">
-        <router-link :to="'/path/' + folder.link + '/'"><i class="material-icons">folder</i> {{
-          folder.name
-        }}</router-link>
+        <router-link :to="'/path/' + folder.link + '/'"
+          ><i class="material-icons">folder</i> {{ folder.name }}</router-link
+        >
       </li>
     </ul>
   </div>

@@ -9,14 +9,17 @@
         />
         <video
           ref="vid"
-          v-else-if="mime.includes('video/') || mime.includes('vnd') && supported"
+          v-else-if="
+            mime.includes('video/') || (mime.includes('vnd') && supported)
+          "
           controls
         >
           <source
             :src="
               mime.includes('video/') || mime.includes('vnd')
                 ? base_url + '/files/' + path
-                : ''"
+                : ''
+            "
             :type="mime"
           />
         </video>
@@ -25,12 +28,12 @@
             <i class="material-icons">music_note</i>
           </div>
           <audio autoplay ref="mus" controls>
-          <source
+            <source
               :src="mime.includes('audio/') ? base_url + '/files/' + path : ''"
             />
           </audio>
         </div>
-        
+
         <div class="notsupported" v-else-if="mime">
           NO PREVIEW
         </div>
@@ -130,10 +133,10 @@ export default {
       return this.loaded;
     },
     mime() {
-      return this.fileByName(this.$route.params.path.split("/").pop()) ? (
-        this.fileByName(this.$route.params.path.split("/").pop()).mime ||
-        "text/plain"
-      ) : "text/plain";
+      return this.fileByName(this.$route.params.path.split("/").pop())
+        ? this.fileByName(this.$route.params.path.split("/").pop()).mime ||
+            "text/plain"
+        : "text/plain";
     },
     isVidEnded() {
       return this.vidEnded;
@@ -173,7 +176,7 @@ export default {
     },
     vidLoaded() {
       this.$refs.vid.style.opacity = 1;
-      this.$refs.vid.style.transform = 'none';
+      this.$refs.vid.style.transform = "none";
     },
     canplay() {
       this.supported = true;
@@ -215,11 +218,12 @@ export default {
   to {
     width: 100%;
     border-top-right-radius: 0;
-    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 }
 
-.notsupported, .audio-wrapper {
+.notsupported,
+.audio-wrapper {
   height: 100%;
   width: 100%;
   min-height: 300px;
@@ -234,7 +238,7 @@ export default {
 .audio-wrapper {
   justify-content: center;
   user-select: none;
-  i{
+  i {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -244,7 +248,7 @@ export default {
 .playNext {
   position: absolute;
   z-index: 999;
-  top: 30%;
+  top: 50%;
   left: 50%;
   transform: translateX(-50%);
   padding: 0.9rem;
@@ -263,8 +267,8 @@ export default {
     left: 0;
     height: 1rem;
     font-size: 1rem;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     background: #28b0ff;
     overflow: hidden;
     &.init {
@@ -277,19 +281,20 @@ export default {
   .closeMe {
     position: absolute;
     cursor: pointer;
-    bottom: -3rem;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: -1.8rem;
+    left: 0;
+    width: 100%;
     font-size: 1rem;
-    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     background: #005485;
     padding: 0.5rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-end;
     i {
-      font-size: inherit;
-      margin-left: 0.3rem;
+      font-size: 1.3rem;
+      margin-left: 0.1rem;
     }
   }
   .wrap {
@@ -306,11 +311,12 @@ export default {
   button {
     color: #fff;
     border: 1px solid #fff;
-    width: 5rem;
+    width: 60px;
+    flex: 0 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
+    height: 60px;
     border-radius: 50%;
     user-select: none;
     font-size: 3rem;
@@ -323,10 +329,10 @@ export default {
     &:hover:after {
       content: "";
       position: absolute;
-      top: calc(-0.5rem - 3px);
-      left: calc(-0.5rem - 3px);
-      width: 6rem;
-      height: 6rem;
+      top: -10px;
+      left: -10px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
       border: 2px solid #77cdff;
     }
@@ -355,6 +361,7 @@ export default {
     background: #0081cc;
     color: #f0f0f0;
     font-weight: 900;
+    margin: 0.3rem 0.3rem;
     &:hover {
       background: #0000;
       color: #0081c1;
@@ -383,7 +390,8 @@ export default {
   width: 100%;
   .content {
     width: 100%;
-    background: #171717;
+    // background: #171717;
+    background: #dcdcdc;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -397,7 +405,7 @@ img {
   height: 100%;
   background: #000;
   outline: none;
-  transition: opacity .3s, transform .3s;
+  transition: opacity 0.3s, transform 0.3s;
   object-fit: contain;
 }
 img {
@@ -412,11 +420,13 @@ video {
   opacity: 0;
 }
 
-
 @media screen and (max-width: 768px) {
   .title {
     max-width: 100%;
     word-break: break-all;
+  }
+  .playNext {
+    top: 25%;
   }
   .content {
     min-height: auto;
