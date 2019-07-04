@@ -11,13 +11,20 @@
       <action-button
         v-if="getFile.mime != 'directory'"
         @click.native="goTo('/files/' + getFile.link)"
-        >Download</action-button
+        >Download <i class="material-icons left-margin">save_alt</i></action-button
       >
       <action-button
         :data-link="getFile.link"
+        v-if="
+          getFile.mime.includes('video/') ||
+            getFile.mime.includes('vnd') ||
+            getFile.mime.includes('directory') ||
+            getFile.mime.includes('image/') ||
+            getFile.mime.includes('audio/')
+        "
         @click.native="open(getFile.mime, getFile.link)"
       >
-        {{ getFile.mime == "directory" ? "Open" : "Play" }}
+        {{ getFile.mime == "directory" ? "Open" : "Play" }} <i class="material-icons left-margin">toll</i>
       </action-button>
     </div>
   </li>
@@ -88,9 +95,11 @@ li {
   transition: background 0.2s;
   &:nth-of-type(even) {
     background: #eee;
-    div {
+    &.info {
       i {
-        background: #e6e6e6;
+        i {
+          background: #e6e6e6;
+        }
       }
     }
   }
@@ -98,8 +107,10 @@ li {
   &:focus {
     background: #daf3ff;
     div {
-      i {
-        background: #c0eaff;
+      &.info {
+        i {
+          background: #c0eaff;
+        }
       }
     }
   }
@@ -107,30 +118,47 @@ li {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    i {
-      transition: background 0.2s;
-      padding: 1rem;
-      cursor: pointer;
-      background: #dcdcdc;
+    position: relative;
+    &.info {
+      i {
+        position: relative;
+        transition: background 0.2s;
+        padding: 1rem;
+        min-height: 100%;
+        cursor: pointer;
+        background: #dcdcdc;
+      }
     }
+    
     span {
       padding: 0 1rem;
     }
     .mime {
       font-size: 0.9rem;
     }
-    button {
-      border: 1px solid #0382c1;
-      background: transparent;
-      outline: none;
-      cursor: pointer;
-      border-radius: 50px;
-      padding: 0.5rem 2rem;
-      margin: 0 0.5rem 0 0;
-      transition: background 0.2s, color 0.2s;
-      &:hover {
-        background: #0382c1;
-        color: #fff;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  li {
+    max-width: 100%;
+    div {
+      i {
+        padding: 0.5rem;
+      }
+      span {
+        font-size: 0.7rem;
+        max-width: 50vw;
+        word-break: break-all;
+        padding: 0.1rem 0.5rem;
+      }
+      .mime {
+        display: none;
+        font-size: 0.6rem;
+      }
+      button {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.7rem;
       }
     }
   }

@@ -21,7 +21,7 @@ app.use(cors());
 app.use(bodyParser.json({ extended: true }));
 
 app.use("/", express.static(path.join(__dirname, "dist")));
-app.use("/files", express.static(path.join(__dirname + mainFolder)));
+app.use(mainFolder, express.static(path.join(__dirname + mainFolder)));
 
 function returnFilesInFolder(folder = "/") {
   console.log("GOT:", folder);
@@ -32,9 +32,8 @@ function returnFilesInFolder(folder = "/") {
     (folder && folder[0] != "/" ? "/" + folder : folder);
   if (fs.existsSync(path_to) && fs.lstatSync(path_to).isFile()) {
     path_to = path.dirname(path_to);
-  } else {
-    path_to = path_to[path_to.length - 1] != "/" ? path_to + "/" : path_to;
   }
+  // path_to = path_to[path_to.length - 1] != "/" ? path_to + "/" : path_to;
   console.log("FINAL", path_to);
   return new Promise((res, rej) => {
     if (
@@ -48,20 +47,29 @@ function returnFilesInFolder(folder = "/") {
         rej(err);
       } else {
         files = files.filter(el => el[0] != ".");
-        let sortedFolders = files.filter(el =>
-          fs.statSync(path_to + "/" + el).isDirectory()
+        let sortedFolders = files.filter(
+          el =>
+            fs.existsSync(path_to + "/" + el) &&
+            fs.statSync(path_to + "/" + el).isDirectory()
         );
-        let sortedFiles = files.filter(el =>
-          fs.statSync(path_to + "/" + el).isFile()
+        let sortedFiles = files.filter(
+          el =>
+            fs.existsSync(path_to + "/" + el) &&
+            fs.statSync(path_to + "/" + el).isFile()
         );
         let joined = [...sortedFolders, ...sortedFiles];
         res(
           joined.map(el => {
-            let mimeType = mime.contentType(path.extname(path_to + "/" + el));
+            let mimeType =
+              fs.existsSync(path_to + "/" + el) &&
+              mime.contentType(path.extname(path_to + "/" + el));
             return {
               name: el,
               mime: mimeType ? mimeType : "directory",
-              link: folder + "/" + el
+              link:
+                path_to.substring(__dirname.length + mainFolder.length + 1) +
+                "/" +
+                el
             };
           })
         );

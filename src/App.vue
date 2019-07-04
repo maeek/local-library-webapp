@@ -24,12 +24,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import url("./assets/main.scss");
 body,
 html {
   padding: 0;
   margin: 0;
   height: 100%;
-  background: #e4e4e4;
+  background: linear-gradient(0, #b7e6ff34, #0000 3rem);
 }
 * {
   box-sizing: border-box;
@@ -55,9 +56,21 @@ html {
 .fade-leave-active {
   transition: transform 0.2s, opacity 0.2s;
 }
-.fade-enter,
+.fade-enter {
+  transform: translateY(10rem);
+  opacity: 0.7;
+}
 .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-10rem);
   opacity: 0;
-  transform: translateY(5rem);
+}
+
+@media screen and (max-width: 768px) {
+  #view {
+    overflow: hidden;
+  }
+  #app {
+    flex-direction: column;
+  }
 }
 </style>

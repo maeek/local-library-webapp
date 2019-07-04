@@ -26,7 +26,16 @@ export default {
   align-items: flex-start;
   flex: 1 0 auto;
   height: 100vh;
+  overflow: hidden;
   flex-direction: column;
   max-width: calc(100% - 250px);
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 </style>

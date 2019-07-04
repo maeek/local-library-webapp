@@ -2,7 +2,15 @@
   <div class="wrapper">
     <content-wrap>
       <content-cont>
-        <ul>
+        <div class="loading-wrap" v-if="fetch_status">
+          <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <ul v-else>
           <file v-for="file in files" :file="file" :key="file.name" />
         </ul>
       </content-cont>
@@ -27,7 +35,7 @@ export default {
     path: String
   },
   computed: {
-    ...mapGetters(["files"])
+    ...mapGetters(["files", "fetch_status"])
   },
   methods: mapActions(["updateFiles", "updateMainFolders"]),
   mounted() {
@@ -59,5 +67,12 @@ ul {
   width: 100%;
   overflow: hidden;
   height: 100%;
+}
+.loading-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

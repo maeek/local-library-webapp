@@ -6,7 +6,10 @@
         <span class="split" v-if="pathSplitter.length > 0">/</span>
       </div>
       <div class="splitter" v-for="(p, i) in pathSplitter" :key="p.name + i">
-        <router-link :to="'/path/' + p.path + '/'">{{ p.name }}</router-link>
+        <router-link
+          :to="i < pathSplitter.length - 1 ? '/path/' + p.path + '/' : ''"
+          >{{ p.name }}</router-link
+        >
         <span class="split" v-if="i != pathSplitter.length - 1">/</span>
       </div>
     </div>
@@ -67,6 +70,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  z-index: 3;
 }
 
 .path {
@@ -84,19 +88,29 @@ export default {
     padding: 0;
     font-size: 1rem;
     a {
-      color: inherit;
+      color: #00649e;
+      font-weight: 400;
       text-decoration: none;
+    }
+    &:last-child {
+      a {
+        font-weight: 100;
+        color: #3e3e3e;
+        cursor: default;
+      }
     }
     .split {
       margin: 0 0.5rem;
       font-size: 1.5rem;
       color: #4ac0ff;
+      user-select: none;
     }
   }
 }
 
 .bar-button {
   display: flex;
+  user-select: none;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -114,6 +128,32 @@ export default {
   }
   i {
     margin: 0 1rem 0 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .path {
+    width: 70%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    .splitter {
+      white-space: nowrap;
+      font-size: 0.7rem;
+      a {
+        font-size: inherit;
+        margin: 0 auto;
+      }
+    }
+    .split {
+      font-size: 1rem;
+    }
+  }
+  .bar-button {
+    padding: 0 0.5rem;
+    font-size: 0.6rem;
+    i {
+      font-size: 1rem;
+      margin: 0 0.3rem 0 0;
+    }
   }
 }
 </style>

@@ -16,8 +16,8 @@ export default {
 <style scoped lang="scss">
 .content {
   width: 100%;
+  min-height: 80%;
   height: auto;
   margin: 0;
-  border-radius: 5px;
 }
 </style>

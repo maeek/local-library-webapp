@@ -9,7 +9,7 @@
         >
       </li>
       <li v-for="folder in mainFolders" :key="folder.path">
-        <router-link :to="'/path/' + folder.link + '/'">{{
+        <router-link :to="'/path/' + folder.link + '/'"><i class="material-icons">folder</i> {{
           folder.name
         }}</router-link>
       </li>
@@ -41,6 +41,7 @@ export default {
 }
 h3 {
   margin: 0;
+  user-select: none;
   padding: 0 1rem;
   display: flex;
   justify-content: flex-start;
@@ -57,6 +58,7 @@ h3 {
 h5 {
   margin: 1rem;
   color: #004b77;
+  user-select: none;
 }
 ul {
   width: 100%;
@@ -80,6 +82,7 @@ li {
   i {
     font-size: inherit;
     margin: 0 1rem 0 0;
+    user-select: none;
   }
 }
 li:hover {
@@ -98,5 +101,17 @@ a {
   padding: 1rem 2rem;
   color: inherit;
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .panel {
+    height: auto;
+    width: 100%;
+  }
+  li {
+    font-size: 0.8rem;
+  }
+  h3 {
+    font-size: 1rem;
+  }
 }
 </style>

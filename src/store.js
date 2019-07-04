@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    base_url: "",
+    base_url: "https://rpi:3000",
     fetchStatus: true,
     playing: {
       status: false,
@@ -36,6 +36,9 @@ export default new Vuex.Store({
     },
     STATUS(state, status) {
       state.fetchStatus = status;
+    },
+    FETCH_STATUS(state, status) {
+      state.fetchStatus = status;
     }
   },
   actions: {
@@ -51,6 +54,7 @@ export default new Vuex.Store({
         !path.includes("/../")
       ) {
         commit("FILES", []);
+        commit("FETCH_STATUS", true);
         fetch(state.base_url + "/api", {
           method: "POST",
           headers: {
@@ -65,10 +69,14 @@ export default new Vuex.Store({
         })
           .then(res => res.json())
           .then(res => {
+            commit("FETCH_STATUS", false);
             commit("FILES", res);
           })
           .catch(e => console.log(e));
-      } else router.push({ name: "home" });
+      } else {
+        commit("FETCH_STATUS", false);
+        router.push({ name: "home" });
+      }
     },
     updateMainFolders({ state, commit }) {
       fetch(state.base_url + "/api", {
@@ -96,6 +104,64 @@ export default new Vuex.Store({
     mainFolders: state => state.mainFolders,
     fileByName: state => name =>
       state.files.length > 0 && state.files.find(el => el.name == name),
-    base_url: state => state.base_url
+    getNext: (state, getters) => activeName => {
+      let path = activeName.split("/");
+      activeName = path.pop();
+      let activeIndex = -1;
+      getters.files
+        .filter(el => el.mime != "directory")
+        .filter((el, i) => {
+          if (el.name == activeName) activeIndex = i;
+          return el.name == activeName;
+        });
+      if (
+        activeIndex > -1 &&
+        state.files &&
+        state.files.filter(el => el.mime != "directory")[activeIndex + 1] &&
+        activeIndex + 1 <=
+          state.files.filter(el => el.mime != "directory").length - 1
+      ) {
+        return {
+          name: state.files.filter(el => el.mime != "directory")[
+            activeIndex + 1
+          ].name,
+          link: state.files.filter(el => el.mime != "directory")[
+            activeIndex + 1
+          ].link
+        };
+      } else {
+        return false;
+      }
+    },
+    getPrev: (state, getters) => activeName => {
+      let path = activeName.split("/");
+      activeName = path.pop();
+      let activeIndex = -1;
+      getters.files
+        .filter(el => el.mime != "directory")
+        .filter((el, i) => {
+          if (el.name == activeName) activeIndex = i;
+          return el.name == activeName;
+        });
+      if (
+        activeIndex > -1 &&
+        state.files &&
+        state.files.filter(el => el.mime != "directory")[activeIndex - 1] &&
+        activeIndex != 0
+      ) {
+        return {
+          name: state.files.filter(el => el.mime != "directory")[
+            activeIndex - 1
+          ].name,
+          link: state.files.filter(el => el.mime != "directory")[
+            activeIndex - 1
+          ].link
+        };
+      } else {
+        return false;
+      }
+    },
+    base_url: state => state.base_url,
+    fetch_status: state => state.fetch
   }
 });
