@@ -21,7 +21,7 @@ export default {
   align-items: center;
   align-content: center;
   flex-direction: column;
-  background: linear-gradient(0, #4ec1ff34, #0000 5%);
+  background: linear-gradient(0, #4ec1ff34, #0000 10%);
   background-attachment: local;
 }
 </style>

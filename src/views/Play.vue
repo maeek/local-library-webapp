@@ -1,75 +1,128 @@
 <template>
-  <div id="app" :key="path">
-    <left-panel />
-    <right-panel>
-     <content-wrap>
-        <content-cont>
-          <video controls>
-            <source :src="'/files/'+(path[path.length - 1] == '/' ? path.split('').slice(0, path.length-2).join('') : path )">
-          </video>
-        </content-cont>
-      </content-wrap>
-    </right-panel>
+  <div class="wrapper">
+    <content-wrap :class="{ loaded: load }">
+      <content-cont>
+        <video
+          ref="vid"
+          v-if="mime.includes('video/') || mime.includes('vnd')"
+          controls
+        >
+          <source :src="base_url + '/files/' + path" />
+        </video>
+        <audio ref="mus" v-else-if="mime.includes('audio/')" controls>
+          <source :src="base_url + '/files/' + path" />
+        </audio>
+        <img
+          ref="imgg"
+          :src="base_url + '/files/' + path"
+          v-else-if="mime.includes('image/')"
+        />
+      </content-cont>
+      <div class="title">{{ path.split("/").pop() }}</div>
+      <div class="actions">
+        <action-button @click.native="goTo('/files/' + path)">
+          Source
+        </action-button>
+      </div>
+    </content-wrap>
   </div>
 </template>
 
 <script>
-import leftPanel from "@/components/left-panel.vue";
-import rightPanel from "@/components/right-panel.vue";
 import contentWrap from "@/components/content-wrap.vue";
 import contentCont from "@/components/content.vue";
-import { mapActions } from "vuex";
+import actionButton from "@/components/action-button.vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "app",
   components: {
-    leftPanel,
-    rightPanel,
     contentWrap,
-    contentCont
+    contentCont,
+    actionButton
+  },
+  data() {
+    return {
+      loaded: false
+    };
   },
   props: {
     path: String
   },
-  methods: mapActions(["updateMainFolders"]),
+  computed: {
+    ...mapGetters(["fileByName", "base_url"]),
+    load() {
+      return this.loaded;
+    },
+    mime() {
+      return (
+        this.fileByName(this.$route.params.path.split("/").pop()).mime ||
+        "video/mp4"
+      );
+    }
+  },
+  methods: {
+    ...mapActions(["updateMainFolders", "updateFiles"]),
+    goTo(link) {
+      location.href = link;
+    }
+  },
   mounted() {
-    this.updateMainFolders(this.path);
+    const $this = this;
+    console.log(this.$route.params.path);
+    this.updateFiles(this.$route.params.path);
+    this.updateMainFolders();
+    this.$refs.vid &&
+      this.$refs.vid.addEventListener("loadedmetadata", function() {
+        $this.loaded = true;
+      });
   }
 };
 </script>
 
 <style scoped lang="scss">
-#app {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+.wrapper {
   width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
-.panel.panel--right {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex: 1 0 auto;
-  height: 100vh;
-  flex-direction: column;
+.title {
+  width: 100%;
+  padding: 1rem;
+  background: #d6d6d6;
+  font-weight: 900;
+}
+
+.actions {
+  width: 100%;
+  padding: 1rem;
 }
 
 .content-wrap {
-  align-items: center;
-  justify-content: center !important;
+  width: 100%;
   .content {
-    min-width: 90%;
-    max-width: 90%;
-    min-height: 90%;
+    width: 100%;
+    height: auto;
+    background: #171717;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: 0;
   }
 }
 
-video {
+video,
+audio {
   max-width: 100%;
   max-height: 100%;
-  height: 100%;
   background: #000;
+}
+img {
+  max-width: 100%;
+}
+audio {
+  width: 100%;
 }
 .content-wrap {
   height: calc(100vh - 3.5rem);

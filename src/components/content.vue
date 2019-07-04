@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 export default {
   name: "rightPanel",
   props: {
@@ -21,6 +20,4 @@ export default {
   margin: 0;
   border-radius: 5px;
 }
-
-
 </style>

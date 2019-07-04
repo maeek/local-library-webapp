@@ -17,20 +17,34 @@ const router = new Router({
       path: "/path/:path(.*)",
       name: "browse",
       props: true,
-      component: Browse
+      component: Browse,
+      strict: true
     },
     {
-      path: "/play=:path(.*)",
+      path: "/play/:path(.*)",
       name: "play",
       props: true,
-      component: Play
+      component: Play,
+      strict: true
     }
   ]
 });
 
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  next();
+});
 router.afterEach(to => {
-  if (to.params.path && to.params.path.split("").reverse()[0] == "/")
+  if (
+    to.name == "browse" &&
+    to.params.path &&
+    to.params.path.split("").reverse()[0] == "/" &&
+    to.name != "play"
+  )
     to.params.path = to.params.path.substring(0, to.params.path.length - 1);
+  else if (to.name == "play")
+    to.params.path =
+      to.params.path[0] != "/" ? "/" + to.params.path : to.params.path;
   store.dispatch("updateFiles", to.params.path);
 });
 

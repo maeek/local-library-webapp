@@ -1,46 +1,76 @@
 <template>
   <li :key="getFile.name">
     <div class="info">
-      <i class="material-icons">{{
-        getFile.mime == "directory" ? "folder" : "movie"
+      <i class="material-icons" @click="open(getFile.mime, getFile.link)">{{
+        getIcon
       }}</i>
       <span class="name">{{ getFile.name }}</span>
       <span class="mime">{{ getFile.mime }}</span>
     </div>
     <div class="action">
-      <button v-if="getFile.mime != 'directory'">Download</button>
-      <button @click="open(getFile.mime, getFile.link)">
+      <action-button
+        v-if="getFile.mime != 'directory'"
+        @click.native="goTo('/files/' + getFile.link)"
+        >Download</action-button
+      >
+      <action-button
+        :data-link="getFile.link"
+        @click.native="open(getFile.mime, getFile.link)"
+      >
         {{ getFile.mime == "directory" ? "Open" : "Play" }}
-      </button>
+      </action-button>
     </div>
   </li>
 </template>
 
 <script>
+import actionButton from "@/components/action-button.vue";
 export default {
   name: "rightPanel",
   props: {
     file: Object
   },
+  components: {
+    actionButton
+  },
+  data() {
+    return {
+      icon: "description"
+    };
+  },
   methods: {
     open(type, link) {
-      console.log(link)
-        link = link && link[0] == "/" ? link.substring(1) : link;
-      // const fullLink = this.$props.path ? this.$props.path + '/' + link : link;
+      link = link && link[0] == "/" ? link.substring(1) : link;
+      console.log(link);
       if (type == "directory") {
         this.$router.push({
           path: `/path/${link}/`
         });
       } else {
         this.$router.push({
-          path: `/play=${link}/`
+          path: `/play/${link}`
         });
       }
+    },
+    setIcon(mime) {
+      if (mime.includes("image/")) return "image";
+      else if (mime.includes("video/") || mime.includes("vnd")) return "movie";
+      else if (mime.includes("audio/")) return "music_note";
+      else if (mime.includes("directory")) return "folder";
+      else if (mime.includes("text/") || mime.includes("application/x-subrip"))
+        return "description";
+      else if (mime.includes("application/")) return "build";
+    },
+    goTo(link) {
+      location.href = link;
     }
   },
   computed: {
     getFile() {
       return this.file;
+    },
+    getIcon() {
+      return this.setIcon(this.getFile.mime);
     }
   }
 };
@@ -80,6 +110,7 @@ li {
     i {
       transition: background 0.2s;
       padding: 1rem;
+      cursor: pointer;
       background: #dcdcdc;
     }
     span {

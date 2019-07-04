@@ -1,24 +1,24 @@
 <template>
-    <div class="bar">
-      <div class="path">
-        <div class="splitter">
-          <router-link to="/">Home</router-link>
-          <span class="split" v-if="i != pathSplitter.length - 1">/</span>
-        </div>
-        <div class="splitter" v-for="(p, i) in pathSplitter" :key="p.name + i">
-          <router-link :to="'/path/' + p.path + '/'">{{ p.name }}</router-link>
-          <span class="split" v-if="i != pathSplitter.length - 1">/</span>
-        </div>
+  <div class="bar">
+    <div class="path">
+      <div class="splitter">
+        <router-link to="/">Home</router-link>
+        <span class="split" v-if="pathSplitter.length > 0">/</span>
       </div>
-      <div class="bar-button" @click="updateFiles(path);">
-        <i class="material-icons">refresh</i>
-        <span>Refresh list</span>
+      <div class="splitter" v-for="(p, i) in pathSplitter" :key="p.name + i">
+        <router-link :to="'/path/' + p.path + '/'">{{ p.name }}</router-link>
+        <span class="split" v-if="i != pathSplitter.length - 1">/</span>
       </div>
     </div>
+    <div class="bar-button" @click="updateAll">
+      <i class="material-icons">refresh</i>
+      <span>Refresh list</span>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   name: "rightPanel",
   props: {
@@ -28,7 +28,12 @@ export default {
     ...mapActions({
       updatePath: "path",
       updateFiles: "updateFiles",
-    })
+      updateMainFolders: "updateMainFolders"
+    }),
+    updateAll() {
+      this.updateFiles(this.$route.params.path);
+      this.updateMainFolders();
+    }
   },
   computed: {
     pathSplitter() {
@@ -36,7 +41,7 @@ export default {
       return this.$route.params.path
         ? this.$route.params.path
             .split("/")
-            .filter(el => el != "")
+            .filter(el => el != "" && el != "..")
             .map((el, i, ar) => {
               return {
                 name: el,
@@ -53,10 +58,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .bar {
   width: 100%;
   height: 3.5rem;
+  flex: 0 0 auto;
   background: #f7f7f7;
   border-bottom: 1px solid #d8d8d8;
   display: flex;

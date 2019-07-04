@@ -7,7 +7,6 @@
 
 <script>
 import bar from "@/components/bar.vue";
-import { mapGetters, mapActions } from "vuex";
 export default {
   name: "rightPanel",
   props: {
@@ -28,6 +27,6 @@ export default {
   flex: 1 0 auto;
   height: 100vh;
   flex-direction: column;
+  max-width: calc(100% - 250px);
 }
-
 </style>

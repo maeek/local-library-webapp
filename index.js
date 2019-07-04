@@ -9,47 +9,83 @@ const cors = require("cors");
 const mime = require("mime-type/with-db");
 const fs = require("fs");
 
+const options = {
+  key: fs.readFileSync("/home/maek/Documents/key.pem"),
+  cert: fs.readFileSync("/home/maek/Documents/cert.pem")
+};
+
 const app = express();
 
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json({ extended: true }));
-// app.get("*", (req, res) => {
-//   res.status(200).json({ message: "ok" });
-// });
 
 app.use("/", express.static(path.join(__dirname, "dist")));
 app.use("/files", express.static(path.join(__dirname + mainFolder)));
 
 function returnFilesInFolder(folder = "/") {
+  console.log("GOT:", folder);
   folder = folder == "/" ? "" : folder;
-  let path_to = __dirname + mainFolder + "/" + folder;
-  if (
-    fs.existsSync() &&
-    !fs.lstatSync(__dirname + mainFolder + "/" + folder).isDirectory()
-  )
-    path_to = path.dirname(__dirname + mainFolder + "/" + folder);
-  else path_to = __dirname + mainFolder + "/" + folder;
-  console.log(path_to);
+  let path_to =
+    __dirname +
+    mainFolder +
+    (folder && folder[0] != "/" ? "/" + folder : folder);
+  if (fs.existsSync(path_to) && fs.lstatSync(path_to).isFile()) {
+    path_to = path.dirname(path_to);
+  } else {
+    path_to = path_to[path_to.length - 1] != "/" ? path_to + "/" : path_to;
+  }
+  console.log("FINAL", path_to);
   return new Promise((res, rej) => {
     if (
       folder.includes("../") ||
       folder.includes("/..") ||
       folder.includes("/../")
     )
-      rej("NOT ALLOWED");
+      rej([]);
+    fs.readdir(path_to, { withFileTypes: true }, (err, files) => {
+      if (err) {
+        rej(err);
+      } else {
+        files = files.filter(el => el[0] != ".");
+        let sortedFolders = files.filter(el =>
+          fs.statSync(path_to + "/" + el).isDirectory()
+        );
+        let sortedFiles = files.filter(el =>
+          fs.statSync(path_to + "/" + el).isFile()
+        );
+        let joined = [...sortedFolders, ...sortedFiles];
+        res(
+          joined.map(el => {
+            let mimeType = mime.contentType(path.extname(path_to + "/" + el));
+            return {
+              name: el,
+              mime: mimeType ? mimeType : "directory",
+              link: folder + "/" + el
+            };
+          })
+        );
+      }
+    });
+  });
+}
+
+function returnFoldersMain() {
+  let path_to = __dirname + mainFolder + "/";
+  return new Promise((res, rej) => {
     fs.readdir(path_to, (err, files) => {
       if (err) rej(err);
       else
         res(
-          files.map(el => {
-            let mimeType = mime.contentType(path.extname(path_to + el));
-            return {
-              name: el,
-              mime: mimeType ? mimeType : "directory",
-              link: folder + el
-            };
-          })
+          files
+            .filter(dirent => fs.statSync(path_to + dirent).isDirectory())
+            .map(el => {
+              return {
+                name: el,
+                mime: "directory",
+                link: el
+              };
+            })
         );
     });
   });
@@ -65,22 +101,28 @@ app.use(function(req, res, next) {
 
 app.post("/api", function(req, res) {
   const { action, key, path } = req.body;
-  console.log(key);
+  console.log("POST:", key, path);
   switch (action) {
     case "get":
       returnFilesInFolder(path)
         .then(data => {
           res.json(data);
         })
-        .catch(e => console.log(e));
+        .catch(e => res.json({ error: e }));
+      break;
+    case "mainDirectory":
+      returnFoldersMain()
+        .then(data => {
+          res.json(data);
+        })
+        .catch(e => res.json({ error: e }));
       break;
   }
 });
 
-const options = {
-  key: fs.readFileSync("/home/maek/Documents/key.pem"),
-  cert: fs.readFileSync("/home/maek/Documents/cert.pem")
-};
+app.get("*", (req, res) => {
+  res.status(200).json({ message: "ok" });
+});
 
 spdy.createServer(options, app).listen(port, error => {
   if (error) {

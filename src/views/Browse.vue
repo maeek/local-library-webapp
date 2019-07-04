@@ -1,21 +1,16 @@
 <template>
-  <div id="app">
-    <left-panel />
-    <right-panel :key="path">
-      <content-wrap>
-        <content-cont>
-          <ul>
-            <file v-for="file in files" :file="file" :key="file.name" />
-          </ul>
-        </content-cont>
-      </content-wrap>
-    </right-panel>
+  <div class="wrapper">
+    <content-wrap>
+      <content-cont>
+        <ul>
+          <file v-for="file in files" :file="file" :key="file.name" />
+        </ul>
+      </content-cont>
+    </content-wrap>
   </div>
 </template>
 
 <script>
-import leftPanel from "@/components/left-panel.vue";
-import rightPanel from "@/components/right-panel.vue";
 import contentWrap from "@/components/content-wrap.vue";
 import contentCont from "@/components/content.vue";
 import file from "@/components/file.vue";
@@ -24,8 +19,6 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "app",
   components: {
-    leftPanel,
-    rightPanel,
     contentWrap,
     contentCont,
     file
@@ -45,23 +38,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#app {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-}
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-bottom: 20rem;
 }
-.panel.panel--right{
+.panel.panel--right {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex: 1 0 auto;
   height: 100vh;
   flex-direction: column;
+}
+.content--wrap {
+  width: 100%;
+}
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
 }
 </style>

@@ -9,7 +9,7 @@
         >
       </li>
       <li v-for="folder in mainFolders" :key="folder.path">
-        <router-link :to="'/path' + folder.link + '/'">{{
+        <router-link :to="'/path/' + folder.link + '/'">{{
           folder.name
         }}</router-link>
       </li>
@@ -36,6 +36,8 @@ export default {
   width: 250px;
   border-right: 1px solid #d8d8d8;
   background: #f0f0f0;
+  display: flex;
+  flex-direction: column;
 }
 h3 {
   margin: 0;
@@ -60,11 +62,18 @@ ul {
   width: 100%;
   list-style-type: none;
   padding: 0;
+  height: 85%;
+  overflow: auto;
+  flex: 1 0 auto;
+  margin: 0;
 }
 li {
   display: flex;
   align-items: center;
   width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: hidden;
   margin: 0;
   background: linear-gradient(90deg, #0000 5%, #0000);
   cursor: pointer;

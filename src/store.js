@@ -6,7 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    base_url: "https://rpi:3000",
     fetchStatus: true,
+    playing: {
+      status: false,
+      what: "",
+      link: ""
+    },
     path: "",
     playable: ["video/mp4", "video/webm"],
     mainFolders: [],
@@ -36,19 +42,21 @@ export default new Vuex.Store({
     path({ commit }, path) {
       commit("PATH", path);
     },
-    updateFiles({ commit }, path) {
+    updateFiles({ state, commit }, path) {
       if (
         path ||
         !path ||
         !path.includes("../") ||
         !path.includes("/..") ||
         !path.includes("/../")
-      )
-        fetch("/api", {
+      ) {
+        commit("FILES", []);
+        fetch(state.base_url + "/api", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
+          mode: "cors",
           body: JSON.stringify({
             key: "abcd1234",
             action: "get",
@@ -60,17 +68,18 @@ export default new Vuex.Store({
             commit("FILES", res);
           })
           .catch(e => console.log(e));
-      else router.push({ name: "home" });
+      } else router.push({ name: "home" });
     },
-    updateMainFolders({ commit }) {
-      fetch("/api", {
+    updateMainFolders({ state, commit }) {
+      fetch(state.base_url + "/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
+        mode: "cors",
         body: JSON.stringify({
           key: "abcd1234",
-          action: "get"
+          action: "mainDirectory"
         })
       })
         .then(res => res.json())
@@ -85,6 +94,8 @@ export default new Vuex.Store({
     path: state => state.path,
     playable: state => state.playable,
     mainFolders: state => state.mainFolders,
-    file: state => name => state.files.find(el => el.name == name)
+    fileByName: state => name =>
+      state.files.length > 0 && state.files.find(el => el.name == name),
+    base_url: state => state.base_url
   }
 });
