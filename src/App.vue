@@ -29,7 +29,7 @@ body,
 html {
   padding: 0;
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   background: linear-gradient(0, #b7e6ff34, #0000 3rem);
 }
 * {

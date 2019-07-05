@@ -159,7 +159,6 @@ li {
         font-size: 0.6rem;
       }
       button {
-        padding: 0.5rem 0.7rem;
         font-size: 0.7rem;
       }
     }
