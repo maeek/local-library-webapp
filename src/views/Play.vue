@@ -357,8 +357,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  box-shadow: 0 0 5px #c3c3c3;
   button {
-    background: #0081cc;
+    background: #0af;
     color: #f0f0f0;
     font-weight: 900;
     margin: 0.3rem 0.3rem;
