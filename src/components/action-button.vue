@@ -14,7 +14,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 button {
-  border: 1px solid #0382c1;
+  border: 1px solid #0af;
   background: transparent;
   outline: none;
   position: relative;
@@ -31,7 +31,7 @@ button {
     padding: 0.5rem 0.5rem 0.5rem 2rem;
   }
   &:hover {
-    background: #0382c1;
+    background: #0af;
     color: #fff;
   }
   i {
