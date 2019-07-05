@@ -65,7 +65,7 @@ function returnFilesInFolder(folder = "/") {
               mime.contentType(path.extname(path_to + "/" + el));
             return {
               name: el,
-              mime: mimeType ? mimeType : "directory",
+              mime: mimeType ? mimeType : "text/plain",
               link:
                 path_to.substring(__dirname.length + mainFolder.length + 1) +
                 "/" +
