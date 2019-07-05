@@ -69,6 +69,7 @@ export default {
       else if (mime.includes("text/") || mime.includes("application/x-subrip"))
         return "description";
       else if (mime.includes("application/")) return "build";
+      else return "description";
     },
     goTo(link) {
       location.href = link;
