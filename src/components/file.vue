@@ -17,11 +17,11 @@
       <action-button
         :data-link="getFile.link"
         v-if="
-          getFile.mime && getFile.mime.includes('video/') ||
-            getFile.mime && getFile.mime.includes('vnd') ||
-            getFile.mime && getFile.mime.includes('directory') ||
-            getFile.mime && getFile.mime.includes('image/') ||
-            getFile.mime && getFile.mime.includes('audio/')
+          (getFile.mime && getFile.mime.includes('video/')) ||
+            (getFile.mime && getFile.mime.includes('vnd')) ||
+            (getFile.mime && getFile.mime.includes('directory')) ||
+            (getFile.mime && getFile.mime.includes('image/')) ||
+            (getFile.mime && getFile.mime.includes('audio/'))
         "
         @click.native="open(getFile.mime, getFile.link)"
       >
@@ -95,7 +95,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.2s;
+  transition: background 0.2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
   &:nth-of-type(even) {
     background: #eee;
     &.info {
@@ -125,7 +125,7 @@ li {
     &.info {
       i {
         position: relative;
-        transition: background 0.2s;
+        transition: background 0.2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
         padding: 1rem;
         min-height: 100%;
         cursor: pointer;

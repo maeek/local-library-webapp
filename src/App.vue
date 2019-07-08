@@ -14,17 +14,21 @@
 <script>
 import leftPanel from "@/components/left-panel.vue";
 import rightPanel from "@/components/right-panel.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "app",
   components: {
     leftPanel,
     rightPanel
+  },
+  computed: {
+    ...mapGetters(["darkTheme"])
   }
 };
 </script>
 
 <style lang="scss">
-@import url("./assets/main.scss");
+@import "./assets/_main.scss";
 body,
 html {
   padding: 0;
@@ -51,18 +55,6 @@ html {
   justify-content: flex-start;
   align-items: flex-start;
   overflow: hidden;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: transform 0.2s, opacity 0.2s;
-}
-.fade-enter {
-  transform: translateY(10rem);
-  opacity: 0.7;
-}
-.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  transform: translateY(-10rem);
-  opacity: 0;
 }
 
 @media screen and (max-width: 768px) {

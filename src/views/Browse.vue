@@ -70,7 +70,7 @@ ul {
 }
 .loading-wrap {
   width: 100%;
-  height: 100%;
+  min-height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;

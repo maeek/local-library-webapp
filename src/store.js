@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     base_url: "",
+    darkTheme: false,
     fetchStatus: true,
     playing: {
       status: false,
@@ -39,11 +40,17 @@ export default new Vuex.Store({
     },
     FETCH_STATUS(state, status) {
       state.fetchStatus = status;
+    },
+    SET_DARK(state, val) {
+      state.darkTheme = val;
     }
   },
   actions: {
     path({ commit }, path) {
       commit("PATH", path);
+    },
+    setDarkTheme({ commit }, val) {
+      commit("SET_DARK", val);
     },
     updateFiles({ state, commit }, path) {
       if (
@@ -121,9 +128,6 @@ export default new Vuex.Store({
         activeIndex + 1 <=
           state.files.filter(el => el.mime != "directory").length - 1
       ) {
-        console.log(
-          state.files.filter(el => el.mime != "directory")[activeIndex + 1].link
-        );
         return {
           name: state.files.filter(el => el.mime != "directory")[
             activeIndex + 1
@@ -165,6 +169,7 @@ export default new Vuex.Store({
       }
     },
     base_url: state => state.base_url,
-    fetch_status: state => state.fetchStatus
+    fetch_status: state => state.fetchStatus,
+    darkTheme: state => state.darkTheme
   }
 });

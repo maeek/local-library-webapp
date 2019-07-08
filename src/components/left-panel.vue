@@ -1,6 +1,10 @@
 <template>
   <div class="panel">
     <h3>LIBRARY</h3>
+    <!-- <div class="themeChanger">
+      <span>Dark Theme</span>
+      <input type="checkbox" name="darkTheme" ref="darkInput" @input="setDark">
+    </div> -->
     <h5>Folders</h5>
     <ul>
       <li>
@@ -25,7 +29,13 @@ export default {
   props: {
     path: String
   },
-  computed: mapGetters(["mainFolders"])
+  computed: mapGetters(["mainFolders"]),
+  methods: {
+    setDark(e) {
+      if (e.target.checked) document.body.classList.add("dark");
+      else document.body.classList.remove("dark");
+    }
+  }
 };
 </script>
 
