@@ -4,7 +4,7 @@
       <content-cont>
         <img
           ref="imgg"
-          :src="mime.includes('image/') ? base_url + '/files/' + path : ''"
+          :src="mime.includes('image/') ? base_url + '/files' + path : ''"
           v-if="mime.includes('image/')"
         />
         <video
@@ -17,7 +17,7 @@
           <source
             :src="
               mime.includes('video/') || mime.includes('vnd')
-                ? base_url + '/files/' + path
+                ? base_url + '/files' + path
                 : ''
             "
             :type="mime"
@@ -29,7 +29,7 @@
           </div>
           <audio autoplay ref="mus" controls>
             <source
-              :src="mime.includes('audio/') ? base_url + '/files/' + path : ''"
+              :src="mime.includes('audio/') ? base_url + '/files' + path : ''"
             />
           </audio>
         </div>
@@ -50,7 +50,7 @@
       </content-cont>
       <div class="title">
         {{ path.split("/").pop() }}
-        <action-button @click.native="goTo(base_url + '/files/' + path)">
+        <action-button @click.native="goTo(base_url + '/files' + path)">
           Download <i class="material-icons left-margin">save_alt</i>
         </action-button>
       </div>
@@ -165,7 +165,7 @@ export default {
       location.href = link;
     },
     routeMe(link) {
-      if (link) this.$router.push({ path: "/play/" + link });
+      if (link) this.$router.push({ path: `/play${link}` });
     },
     endedEvent() {
       this.vidEnded = true;

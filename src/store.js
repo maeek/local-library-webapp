@@ -121,6 +121,9 @@ export default new Vuex.Store({
         activeIndex + 1 <=
           state.files.filter(el => el.mime != "directory").length - 1
       ) {
+        console.log(
+          state.files.filter(el => el.mime != "directory")[activeIndex + 1].link
+        );
         return {
           name: state.files.filter(el => el.mime != "directory")[
             activeIndex + 1
@@ -162,6 +165,6 @@ export default new Vuex.Store({
       }
     },
     base_url: state => state.base_url,
-    fetch_status: state => state.fetch
+    fetch_status: state => state.fetchStatus
   }
 });

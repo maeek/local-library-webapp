@@ -17,11 +17,11 @@
       <action-button
         :data-link="getFile.link"
         v-if="
-          getFile.mime.includes('video/') ||
-            getFile.mime.includes('vnd') ||
-            getFile.mime.includes('directory') ||
-            getFile.mime.includes('image/') ||
-            getFile.mime.includes('audio/')
+          getFile.mime && getFile.mime.includes('video/') ||
+            getFile.mime && getFile.mime.includes('vnd') ||
+            getFile.mime && getFile.mime.includes('directory') ||
+            getFile.mime && getFile.mime.includes('image/') ||
+            getFile.mime && getFile.mime.includes('audio/')
         "
         @click.native="open(getFile.mime, getFile.link)"
       >
@@ -50,7 +50,6 @@ export default {
   methods: {
     open(type, link) {
       link = link && link[0] == "/" ? link.substring(1) : link;
-      console.log(link);
       if (type == "directory") {
         this.$router.push({
           path: `/path/${link}/`
@@ -62,7 +61,8 @@ export default {
       }
     },
     setIcon(mime) {
-      if (mime.includes("image/")) return "image";
+      if (!mime) return "build";
+      else if (mime.includes("image/")) return "image";
       else if (mime.includes("video/") || mime.includes("vnd")) return "movie";
       else if (mime.includes("audio/")) return "music_note";
       else if (mime.includes("directory")) return "folder";
