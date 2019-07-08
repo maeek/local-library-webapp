@@ -22,10 +22,6 @@ if (!settings.certs.key && !settings.certs.cert) {
   return process.exit(1);
 }
 
-if (!settings.mainFolder) {
-  console.log("Created folder './files'");
-}
-
 app.use(cors());
 app.use(compression());
 app.use(bodyParser.json({ extended: true }));
@@ -48,7 +44,7 @@ function checkIfFolder(pth) {
 }
 
 function getMimeType(pth) {
-  return mime.contentType(path.extname(pth));
+  return mime.contentType(path.extname(pth)) || "directory";
 }
 
 function createValidPath(requested, relative = false) {
@@ -79,11 +75,11 @@ function createValidPath(requested, relative = false) {
 
 function foldersFirst(pathToFile, files, fileType) {
   const sortedFolders =
-      fileType && (fileType == "all" || fileType) == "folders"
+      fileType == "all" || fileType == "folders"
         ? files.filter(el => fs.statSync(`${pathToFile}/${el}`).isDirectory())
         : [],
     sortedFiles =
-      fileType && (fileType == "all" || fileType == "files")
+      fileType == "all" || fileType == "files"
         ? files.filter(el => fs.statSync(`${pathToFile}/${el}`).isFile())
         : [];
   files = [...sortedFolders, ...sortedFiles];
