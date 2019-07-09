@@ -5,7 +5,7 @@
     </div>
     <audio autoplay ref="mus" controls>
       <source
-        :src="mime.includes('audio/') ? base_url + '/files' + path : ''"
+        :src="mime.includes('audio/') ? base_url + '/files/' + path : ''"
       />
     </audio>
   </div>

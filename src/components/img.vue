@@ -1,5 +1,5 @@
 <template>
-  <img :src="mime.includes('image/') ? base_url + '/files' + path : ''" />
+  <img :src="mime.includes('image/') ? base_url + '/files/' + path : ''" />
 </template>
 
 <script>

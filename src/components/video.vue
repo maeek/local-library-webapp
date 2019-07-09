@@ -3,7 +3,7 @@
     <source
       :src="
         mime.includes('video/') || mime.includes('vnd')
-          ? base_url + '/files' + path
+          ? base_url + '/files/' + path
           : ''
       "
       :type="mime"
