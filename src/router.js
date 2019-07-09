@@ -31,16 +31,16 @@ const router = new Router({
 });
 
 router.afterEach(to => {
-  if (
-    to.name == "browse" &&
-    to.params.path &&
-    to.params.path.split("").reverse()[0] == "/" &&
-    to.name != "play"
-  )
-    to.params.path = to.params.path.substring(0, to.params.path.length - 1);
-  else if (to.name == "play")
-    to.params.path =
-      to.params.path[0] != "/" ? "/" + to.params.path : to.params.path;
+  // if (
+  //   to.name == "browse" &&
+  //   to.params.path &&
+  //   to.params.path.split("").reverse()[0] == "/" &&
+  //   to.name != "play"
+  // )
+  //   to.params.path = to.params.path.substring(0, to.params.path.length - 1);
+  // else if (to.name == "play")
+  //   to.params.path =
+  //     to.params.path[0] != "/" ? "/" + to.params.path : to.params.path;
   store.dispatch("updateFiles", to.params.path);
 });
 

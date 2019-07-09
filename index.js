@@ -103,7 +103,7 @@ function readFiles(folder = "/", fileType = "all") {
               name: el,
               mime: getMimeType(`${pathToFile}/${el}`),
               link: createValidPath(
-                `${pathToFile.substring(settings.mainFolder.length)}/${el}`,
+                `${pathToFile.substring(settings.mainFolder.length)}${el}`,
                 true
               )
             };
