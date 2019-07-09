@@ -34,7 +34,7 @@ html {
   padding: 0;
   margin: 0;
   min-height: 100%;
-  background: linear-gradient(0, #b7e6ff34, #0000 3rem);
+  background: linear-gradient(0, #b7e6ff34, #0000000d 3rem);
 }
 * {
   box-sizing: border-box;
