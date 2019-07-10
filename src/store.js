@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    base_url: "https://rpi:3000",
+    base_url: "",
     darkTheme: false,
     fetchStatus: true,
     playing: {
