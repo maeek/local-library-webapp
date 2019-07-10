@@ -9,13 +9,14 @@
     <ul>
       <li>
         <router-link to="/"
-          ><i class="material-icons">home</i> Root folder</router-link
+          ><i class="material-icons-outlined">home</i> Root folder</router-link
         >
       </li>
       <li v-for="folder in mainFolders" :key="folder.path">
-        <router-link :to="'/path/' + folder.link + '/'"
-          ><i class="material-icons">folder</i> {{ folder.name }}</router-link
-        >
+        <router-link :to="'/path/' + folder.link + '/'">
+          <i class="material-icons-outlined">folder</i>
+          <span>{{ folder.name }}</span>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -59,7 +60,7 @@ h3 {
   height: 3.5rem;
   font-size: 2rem;
   font-family: inherit;
-  color: #0081cc;
+  color: #3f51b5;
   border-bottom: 1px solid #d8d8d8;
   background: #f7f7f7;
   letter-spacing: 0.2rem;
@@ -93,6 +94,7 @@ li {
     font-size: inherit;
     margin: 0 1rem 0 0;
     user-select: none;
+    color: #3f51b5;
   }
 }
 li:hover {

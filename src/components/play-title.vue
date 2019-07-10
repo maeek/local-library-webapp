@@ -75,13 +75,13 @@ export default {
   flex-wrap: wrap;
   box-shadow: 0 0 5px #c3c3c3;
   button {
-    background: #0af;
+    background: #512da8;
     color: #f0f0f0;
     font-weight: 900;
     margin: 0.3rem 0.3rem;
     &:hover {
       background: #0000;
-      color: #0081c1;
+      color: #512da8;
     }
   }
 }

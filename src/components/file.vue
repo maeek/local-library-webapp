@@ -1,9 +1,11 @@
 <template>
   <li :key="getFile.name">
     <div class="info">
-      <i class="material-icons" @click="open(getFile.mime, getFile.link)">{{
-        getIcon
-      }}</i>
+      <i
+        class="material-icons-outlined"
+        @click="open(getFile.mime, getFile.link)"
+        >{{ getIcon }}</i
+      >
       <span class="name">{{ getFile.name }}</span>
       <span class="mime">{{ getFile.mime }}</span>
     </div>
@@ -108,11 +110,11 @@ li {
   }
   &:hover,
   &:focus {
-    background: #daf3ff;
+    background: #ede7f6;
     div {
       &.info {
         i {
-          background: #c0eaff;
+          background: #d1c4e9;
         }
       }
     }
@@ -130,6 +132,7 @@ li {
         min-height: 100%;
         cursor: pointer;
         background: #dcdcdc;
+        color: #3f51b5;
       }
     }
 

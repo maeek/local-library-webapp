@@ -74,6 +74,7 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
+    color: #b39ddb;
     font-size: 5rem;
   }
 }

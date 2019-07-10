@@ -88,7 +88,7 @@ export default {
     padding: 0;
     font-size: 1rem;
     a {
-      color: #00649e;
+      color: #9575cd;
       font-weight: 400;
       text-decoration: none;
     }
@@ -102,7 +102,7 @@ export default {
     .split {
       margin: 0 0.5rem;
       font-size: 1.5rem;
-      color: #4ac0ff;
+      color: #673ab7;
       user-select: none;
     }
   }
@@ -118,7 +118,7 @@ export default {
   transition: background 0.2s;
   cursor: pointer;
   &:hover {
-    background: #c7e5f5;
+    background: #d1c4e9;
   }
   i,
   span {

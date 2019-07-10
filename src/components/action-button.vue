@@ -14,7 +14,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 button {
-  border: 1px solid #0af;
+  border: 1px solid #b39ddb;
   background: transparent;
   outline: none;
   position: relative;
@@ -27,11 +27,12 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #512da8;
   &.right {
     padding: 0.5rem 0.5rem 0.5rem 2rem;
   }
   &:hover {
-    background: #0af;
+    background: #7e57c2;
     color: #fff;
   }
   i {
