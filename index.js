@@ -2,6 +2,7 @@ const spdy = require("spdy"),
   express = require("express"),
   compression = require("compression"),
   bodyParser = require("body-parser"),
+  http = require("http"),
   path = require("path"),
   cors = require("cors"),
   mime = require("mime-type/with-db"),
@@ -12,15 +13,16 @@ const settings = {
   port: process.env.PORT || 3000,
   mainFolder: process.env.FULL_PATH || path.join(__dirname, "/files"),
   certs: {
-    key: process.env.KEY_PAM || fs.readFileSync("./key.pem"),
-    cert: process.env.CERT_PEM || fs.readFileSync("./cert.pem")
+    key:
+      process.env.KEY_PAM ||
+      (fs.existsSync("./key.pem") && fs.readFileSync("./key.pem")) ||
+      false,
+    cert:
+      process.env.CERT_PEM ||
+      (fs.existsSync("./key.pem") && fs.readFileSync("./cert.pem")) ||
+      false
   }
 };
-
-if (!settings.certs.key && !settings.certs.cert) {
-  console.log("Please provide certificate!");
-  return process.exit(1);
-}
 
 app.use(cors());
 app.use(compression());
@@ -148,11 +150,22 @@ app.get("*", (req, res) => {
   res.status(404).json({ status: 404, message: "Page not found" });
 });
 
-spdy.createServer(settings.certs, app).listen(settings.port, error => {
-  if (error) {
-    console.error("Failed to start the server\n", error);
-    return process.exit(1);
-  } else {
-    console.log("Listening on port: " + settings.port + ".");
-  }
-});
+if (!settings.certs.key && !settings.certs.cert) {
+  http.createServer(app).listen(settings.port, error => {
+    if (error) {
+      console.error("Failed to start the server\n", error);
+      return process.exit(1);
+    } else {
+      console.log("Listening on port: " + settings.port + ".");
+    }
+  });
+} else {
+  spdy.createServer(settings.certs, app).listen(settings.port, error => {
+    if (error) {
+      console.error("Failed to start the server\n", error);
+      return process.exit(1);
+    } else {
+      console.log("Listening on port: " + settings.port + ".");
+    }
+  });
+}
