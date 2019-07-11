@@ -98,7 +98,7 @@ li {
   }
 }
 li:hover {
-  background: linear-gradient(90deg, #00a4ff5c 5%, #0000);
+  background: linear-gradient(90deg, #D1C4E9 5%, #0000);
   a {
     padding: 1rem 0 1rem 3rem;
   }
