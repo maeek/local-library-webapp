@@ -12,6 +12,9 @@ npm run start
 
 Default port 3000
 
+### TODO
+ - Fix file paths
+ - Material-icons not displaying properly on some devices
 
 ### Compiles and minifies for production
 ```
